@@ -1,76 +1,220 @@
-# Quality Analysis Plugin for Claude Code
+# ThinkPrompt Plugin for Claude Code
 
-A comprehensive code quality analysis skill that runs local analysis tools and stores results in ThinkPrompt for trend tracking.
+Integrate ThinkPrompt's powerful prompt management, project tracking, quality analytics, and test session tools directly into Claude Code.
 
-## Usage
+## Features
+
+### 📝 Prompt Management
+- Create, manage, and execute prompts with variables
+- Browse and use templates (example prompts and style guides)
+- Version control for prompts
+- Tag-based organization
+
+### 📊 Project & Task Management
+- Manage projects, features/epics, and tasks
+- Hierarchical feature structure (Epic → Story → Task)
+- AI-powered task generation from features
+- Comment threads and change history
+- Kürzel-based task references (e.g., "TP-001")
+
+### 🔄 Workflow Automation
+- Create reusable automation sequences
+- Combine prompts, templates, and tasks
+- Conditional execution and error handling
+- Track workflow execution history
+
+### 🔍 Quality Analytics
+- Comprehensive code quality analysis with `/quality-analysis` command
+- Track ESLint, TypeScript, test coverage, complexity, duplication
+- Store results in ThinkPrompt for trend tracking
+- Issue tracking with severity and location
+- Dashboard with scores and trends over time
+
+### 🧪 Test Analytics
+- Track QA and Playwright testing sessions
+- Log network requests, console messages, interactions
+- Report bugs with screenshots and environment info
+- Session summaries with metrics and issue breakdown
+
+### 🔌 Plugin Marketplace
+- Browse and install Claude Code plugins
+- Search by category and keywords
+- Track plugin installations and ratings
+
+## Installation
+
+### Prerequisites
+- Claude Code installed
+- Node.js 18+ (for MCP server via npx)
+- ThinkPrompt account with API key
+
+### Install Plugin
+
+```bash
+claude plugin install bitbucket:vernes_p/thinkprompt-plugin
+```
+
+### Configure API Key
+
+Create or edit `~/.claude/.env`:
+
+```bash
+THINKPROMPT_API_URL=https://thinkprompt-api-v2.azurewebsites.net/api/v1
+THINKPROMPT_API_KEY=tp_your-api-key-here
+```
+
+Get your API key from: https://thinkprompt.app/settings/api-keys
+
+### Verify Installation
+
+Restart Claude Code and check that ThinkPrompt MCP tools are available:
+- `list_prompts`
+- `list_projects`
+- `start_quality_analysis`
+- etc.
+
+## Commands
+
+### `/quality-analysis`
+
+Run comprehensive code quality analysis and store results in ThinkPrompt.
 
 ```bash
 # Full analysis
 /quality-analysis
 
-# Quick analysis (core metrics only)
+# Quick mode (core metrics only)
 /quality-analysis quick
 
 # Analyze specific project
 /quality-analysis <project-id>
 ```
 
-## Metrics Analyzed
+**Metrics analyzed:**
+- ESLint (code style and errors)
+- TypeScript (type errors)
+- Test Coverage (line, branch, function)
+- Cyclomatic Complexity
+- Code Duplication
+- Bundle Size
+- Dependencies (vulnerabilities, outdated)
+- Dead Code (unused exports)
 
-| Metric | Tool | What it measures |
-|--------|------|------------------|
-| ESLint | eslint | Code style and potential errors |
-| TypeScript | tsc, type-coverage | Type errors and type coverage |
-| Test Coverage | jest | Line, branch, function coverage |
-| Complexity | es6-plato | Cyclomatic complexity |
-| Duplication | jscpd | Copy-pasted code |
-| Bundle Size | webpack stats | Build output size |
-| Dependencies | npm audit/outdated | Vulnerabilities and outdated packages |
-| Dead Code | ts-prune, knip | Unused exports and files |
+## MCP Tools
 
-## Requirements
+The plugin provides 70+ MCP tools via the ThinkPrompt MCP Server:
 
-- Node.js project with `package.json`
-- ThinkPrompt MCP server connected
-- Git repository (for branch/commit tracking)
+### Prompt Tools
+`list_prompts`, `get_prompt`, `create_prompt`, `update_prompt`, `execute_prompt`, `get_prompt_variables`
 
-## How It Works
+### Template Tools
+`list_templates`, `get_template`, `create_template`, `update_template`
 
-1. **Setup**: Detects project type, gets git info, creates quality snapshot in ThinkPrompt
-2. **Analysis**: Runs each applicable tool and parses results
-3. **Recording**: Stores metrics and issues via ThinkPrompt MCP tools
-4. **Summary**: Presents overall score with trends and recommendations
+### Project Tools
+`list_projects`, `get_project`, `create_project`, `get_project_statistics`
 
-## Quick Mode
+### Feature Tools
+`list_features`, `create_feature`, `update_feature_status`, `add_feature_comment`, `get_feature_history`
 
-Use `/quality-analysis quick` to skip:
-- Complexity analysis
-- Duplication detection
-- Bundle size analysis
-- Dead code detection
+### Task Tools
+`list_tasks`, `get_task`, `create_task`, `update_task`, `update_task_status`, `ai_edit_task`, `add_task_comment`, `get_task_history`
 
-Only runs: ESLint, TypeScript, Test Coverage, Dependency Check
+### AI Generation Tools
+`generate_tasks_from_feature`, `generate_tasks_bulk`, `generate_features_from_document`
 
-## Scoring
+### Workflow Tools
+`list_workflows`, `get_workflow`, `create_workflow`, `update_workflow`, `delete_workflow`, `validate_workflow`
 
-Each metric produces a score from 0-100. The overall score is a weighted average:
-- ESLint: 15%
-- TypeScript: 15%
-- Test Coverage: 20%
-- Complexity: 10%
-- Duplication: 10%
-- Dependencies: 15%
-- Dead Code: 5%
-- Bundle Size: 10%
+### Quality Analytics Tools
+`start_quality_analysis`, `record_quality_metric`, `report_quality_issue`, `complete_quality_analysis`, `get_quality_overview`, `get_quality_trends`
 
-## ThinkPrompt Integration
+### Test Analytics Tools
+`start_test_session`, `record_metric`, `report_issue`, `end_test_session`, `list_test_sessions`, `get_test_session`
 
-Results are stored in ThinkPrompt allowing:
-- Trend analysis over time
-- Comparison between snapshots
-- Issue tracking and resolution
-- Team visibility into code health
+### Workspace Tools
+`list_workspaces`, `get_current_workspace`, `switch_workspace`
+
+### Plugin Marketplace Tools
+`search_marketplace_plugins`, `get_marketplace_plugin`, `get_plugin_categories`, `register_marketplace_plugin`
+
+## Example Usage
+
+### Prompt Management
+```
+Show me all available prompts with the tag "marketing"
+```
+
+```
+Execute the "blog-article-generator" prompt with topic "AI in Sales"
+```
+
+### Project Management
+```
+List all projects in my workspace
+```
+
+```
+Create a feature "User Authentication" in project TP
+```
+
+```
+Generate development tasks from feature "Login System"
+```
+
+```
+Update task TP-042 status to "in_progress"
+```
+
+### Quality Analysis
+```
+/quality-analysis
+```
+
+```
+Show me quality trends for the last 30 days
+```
+
+### Test Analytics
+```
+Start a test session for homepage testing
+```
+
+```
+Report a bug found during testing with screenshot
+```
+
+## Troubleshooting
+
+### MCP Server Not Starting
+
+Check that environment variables are set:
+```bash
+echo $THINKPROMPT_API_URL
+echo $THINKPROMPT_API_KEY
+```
+
+### Tools Not Available
+
+Restart Claude Code after plugin installation:
+```bash
+claude restart
+```
+
+### API Key Invalid
+
+Get a fresh API key from https://thinkprompt.app/settings/api-keys and update `~/.claude/.env`
+
+## Development
+
+The plugin uses the ThinkPrompt MCP Server which runs via npx. No local MCP server installation required.
+
+MCP Server repository: https://bitbucket.org/vernes_p/thinkprompt-mcp
+
+## License
+
+MIT
 
 ## Author
 
 Honeyfield (dev@honeyfield.de)
+https://thinkprompt.app
