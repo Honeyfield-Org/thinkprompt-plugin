@@ -56,14 +56,30 @@ claude plugin install bitbucket:vernes_p/thinkprompt-plugin
 
 ### Configure API Key
 
-Create or edit `~/.claude/.env`:
+Add the environment variables to your Claude Code settings file `~/.claude/settings.json`:
 
-```bash
-THINKPROMPT_API_URL=https://thinkprompt-api-v2.azurewebsites.net/api/v1
-THINKPROMPT_API_KEY=tp_your-api-key-here
+```json
+{
+  "env": {
+    "THINKPROMPT_API_URL": "https://thinkprompt-api-v2.azurewebsites.net/api/v1",
+    "THINKPROMPT_API_KEY": "tp_your-api-key-here"
+  }
+}
 ```
 
+**Important:** Claude Code does NOT automatically load `.env` files. Environment variables must be configured in `settings.json`.
+
 Get your API key from: https://thinkprompt.app/settings/api-keys
+
+For local development, use:
+```json
+{
+  "env": {
+    "THINKPROMPT_API_URL": "http://localhost:3001/api/v1",
+    "THINKPROMPT_API_KEY": "tp_your-api-key-here"
+  }
+}
+```
 
 ### Verify Installation
 
@@ -185,24 +201,30 @@ Report a bug found during testing with screenshot
 
 ## Troubleshooting
 
-### MCP Server Not Starting
+### MCP Server Not Starting / Missing Environment Variables
 
-Check that environment variables are set:
-```bash
-echo $THINKPROMPT_API_URL
-echo $THINKPROMPT_API_KEY
+If you see: `Missing environment variables: THINKPROMPT_API_URL, THINKPROMPT_API_KEY`
+
+**Solution:** Add the `env` block to your `~/.claude/settings.json`:
+
+```json
+{
+  "env": {
+    "THINKPROMPT_API_URL": "https://thinkprompt-api-v2.azurewebsites.net/api/v1",
+    "THINKPROMPT_API_KEY": "tp_your-api-key-here"
+  }
+}
 ```
+
+Then restart Claude Code.
 
 ### Tools Not Available
 
-Restart Claude Code after plugin installation:
-```bash
-claude restart
-```
+Restart Claude Code after plugin installation or settings change.
 
 ### API Key Invalid
 
-Get a fresh API key from https://thinkprompt.app/settings/api-keys and update `~/.claude/.env`
+Get a fresh API key from https://thinkprompt.app/settings/api-keys and update the `env` block in `~/.claude/settings.json`
 
 ## Development
 
