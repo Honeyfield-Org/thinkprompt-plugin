@@ -1,7 +1,11 @@
 {
-  "$schema": "https://cdn.jsdelivr.net/npm/@anthropic-ai/claude-code@latest/resources/marketplace-schema.json",
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "thinkprompt-github",
   "description": "ThinkPrompt Plugin Marketplace",
+  "owner": {
+    "name": "Honeyfield",
+    "email": "dev@honeyfield.de"
+  },
   "plugins": [
     {
       "name": "thinkprompt",
@@ -11,6 +15,7 @@
         "name": "Honeyfield",
         "email": "dev@honeyfield.de"
       },
+      "source": ".",
       "homepage": "https://thinkprompt.app",
       "keywords": ["prompts", "project-management", "quality-analysis", "testing", "mcp"]
     }
