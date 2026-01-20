@@ -100,8 +100,7 @@ Add the environment variables to your Claude Code settings file `~/.claude/setti
 }
 ```
 
-**Get your API key from:** https://thinkprompt.app/settings/api-keys
-
+**Get your API key from:** https://thinkprompt.ai/settings
 **Note:** Claude Code resolves `${VAR}` references in `.mcp.json` from the `env` block in `settings.json`. You don't need to create a separate `.env` file.
 
 #### For Local Development
