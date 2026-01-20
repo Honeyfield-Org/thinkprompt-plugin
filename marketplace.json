@@ -1,0 +1,18 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@anthropic-ai/claude-code@latest/resources/marketplace-schema.json",
+  "name": "thinkprompt-github",
+  "description": "ThinkPrompt Plugin Marketplace",
+  "plugins": [
+    {
+      "name": "thinkprompt",
+      "version": "1.0.0",
+      "description": "ThinkPrompt integration for Claude Code - prompt management, project tracking, quality analytics, and test session tools via MCP server.",
+      "author": {
+        "name": "Honeyfield",
+        "email": "dev@honeyfield.de"
+      },
+      "homepage": "https://thinkprompt.app",
+      "keywords": ["prompts", "project-management", "quality-analysis", "testing", "mcp"]
+    }
+  ]
+}
