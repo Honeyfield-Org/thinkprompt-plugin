@@ -48,7 +48,25 @@ Integrate ThinkPrompt's powerful prompt management, project tracking, quality an
 - Node.js 18+ (for MCP server via npx)
 - ThinkPrompt account with API key
 
-### Install Plugin
+### Install from Marketplace
+
+The plugin is available on the ThinkPrompt Marketplace:
+
+```bash
+claude plugin add thinkprompt@thinkprompt-marketplace
+```
+
+**Marketplace URL:**
+```
+https://api.thinkprompt.ai/api/v1/plugins/marketplace.json
+```
+
+To register the marketplace in Claude Code:
+```bash
+claude marketplace add thinkprompt-marketplace https://api.thinkprompt.ai/api/v1/plugins/marketplace.json
+```
+
+### Alternative: Install from Bitbucket
 
 ```bash
 claude plugin install bitbucket:vernes_p/thinkprompt-plugin
@@ -56,27 +74,61 @@ claude plugin install bitbucket:vernes_p/thinkprompt-plugin
 
 ### Configure API Key
 
+You have two options to configure your API key:
+
+#### Option 1: Let Claude Code help you (Recommended)
+
+Simply ask Claude Code:
+> "Help me configure the ThinkPrompt plugin with my API key"
+
+Claude Code will guide you through adding the environment variables to your settings.
+
+#### Option 2: Manual Configuration
+
 Add the environment variables to your Claude Code settings file `~/.claude/settings.json`:
 
 ```json
 {
   "env": {
-    "THINKPROMPT_API_URL": "https://thinkprompt-api-v2.azurewebsites.net/api/v1",
+    "THINKPROMPT_API_URL": "https://api.thinkprompt.ai/api/v1",
     "THINKPROMPT_API_KEY": "tp_your-api-key-here"
   }
 }
 ```
 
-**Important:** Claude Code does NOT automatically load `.env` files. Environment variables must be configured in `settings.json`.
+**Get your API key from:** https://thinkprompt.app/settings/api-keys
 
-Get your API key from: https://thinkprompt.app/settings/api-keys
+**Note:** Claude Code resolves `${VAR}` references in `.mcp.json` from the `env` block in `settings.json`. You don't need to create a separate `.env` file.
 
-For local development, use:
+#### For Local Development
+
 ```json
 {
   "env": {
     "THINKPROMPT_API_URL": "http://localhost:3001/api/v1",
     "THINKPROMPT_API_KEY": "tp_your-api-key-here"
+  }
+}
+```
+
+### Claude Desktop Integration
+
+You can also use ThinkPrompt in Claude Desktop. Add this to your config file:
+
+**macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+**Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "thinkprompt": {
+      "command": "npx",
+      "args": ["@honeyfield/thinkprompt-mcp"],
+      "env": {
+        "THINKPROMPT_API_URL": "https://api.thinkprompt.ai/api/v1",
+        "THINKPROMPT_API_KEY": "tp_your-api-key-here"
+      }
+    }
   }
 }
 ```
@@ -210,7 +262,7 @@ If you see: `Missing environment variables: THINKPROMPT_API_URL, THINKPROMPT_API
 ```json
 {
   "env": {
-    "THINKPROMPT_API_URL": "https://thinkprompt-api-v2.azurewebsites.net/api/v1",
+    "THINKPROMPT_API_URL": "https://api.thinkprompt.ai/api/v1",
     "THINKPROMPT_API_KEY": "tp_your-api-key-here"
   }
 }
