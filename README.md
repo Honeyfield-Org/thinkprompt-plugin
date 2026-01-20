@@ -66,10 +66,14 @@ To register the marketplace in Claude Code:
 claude marketplace add thinkprompt-marketplace https://api.thinkprompt.ai/api/v1/plugins/marketplace.json
 ```
 
-### Alternative: Install from Bitbucket
+### Alternative: Install from GitHub
 
 ```bash
-claude plugin install bitbucket:vernes_p/thinkprompt-plugin
+# 1. Add the GitHub marketplace
+claude plugin marketplace add Honeyfield-Org/thinkprompt-plugin
+
+# 2. Install the plugin
+claude plugin install thinkprompt@thinkprompt-github
 ```
 
 ### Configure API Key

@@ -18,7 +18,7 @@
       "version": "1.0.0",
       "category": "development",
       "homepage": "https://thinkprompt.app",
-      "repository": "https://github.com/vernesP/thinkprompt-plugin",
+      "repository": "https://github.com/Honeyfield-Org/thinkprompt-plugin",
       "license": "MIT",
       "keywords": [
         "claude-code",
@@ -30,7 +30,7 @@
       ],
       "source": {
         "source": "url",
-        "url": "https://github.com/vernesP/thinkprompt-plugin.git"
+        "url": "https://github.com/Honeyfield-Org/thinkprompt-plugin.git"
       }
     }
   ]
