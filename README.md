@@ -58,12 +58,12 @@ claude plugin add thinkprompt@thinkprompt-marketplace
 
 **Marketplace URL:**
 ```
-https://api.thinkprompt.ai/api/v1/plugins/marketplace.json
+https://thinkprompt-api-v2.azurewebsites.net/api/v1/plugins/marketplace.json
 ```
 
 To register the marketplace in Claude Code:
 ```bash
-claude marketplace add thinkprompt-marketplace https://api.thinkprompt.ai/api/v1/plugins/marketplace.json
+claude marketplace add thinkprompt-marketplace https://thinkprompt-api-v2.azurewebsites.net/api/v1/plugins/marketplace.json
 ```
 
 ### Alternative: Install from GitHub
@@ -102,7 +102,7 @@ Add the environment variables to your Claude Code settings file `~/.claude/setti
 ```json
 {
   "env": {
-    "THINKPROMPT_API_URL": "https://api.thinkprompt.ai/api/v1",
+    "THINKPROMPT_API_URL": "https://thinkprompt-api-v2.azurewebsites.net/api/v1",
     "THINKPROMPT_API_KEY": "tp_your-api-key-here"
   }
 }
@@ -136,7 +136,7 @@ You can also use ThinkPrompt in Claude Desktop. Add this to your config file:
       "command": "npx",
       "args": ["@honeyfield/thinkprompt-mcp"],
       "env": {
-        "THINKPROMPT_API_URL": "https://api.thinkprompt.ai/api/v1",
+        "THINKPROMPT_API_URL": "https://thinkprompt-api-v2.azurewebsites.net/api/v1",
         "THINKPROMPT_API_KEY": "tp_your-api-key-here"
       }
     }
@@ -299,7 +299,7 @@ Or manually add the `env` block to your `~/.claude/settings.json`:
 ```json
 {
   "env": {
-    "THINKPROMPT_API_URL": "https://api.thinkprompt.ai/api/v1",
+    "THINKPROMPT_API_URL": "https://thinkprompt-api-v2.azurewebsites.net/api/v1",
     "THINKPROMPT_API_KEY": "tp_your-api-key-here"
   }
 }

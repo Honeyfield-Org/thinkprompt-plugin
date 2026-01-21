@@ -33,7 +33,7 @@ Merge the following into the settings JSON, preserving any existing configuratio
 ```json
 {
   "env": {
-    "THINKPROMPT_API_URL": "https://api.thinkprompt.ai/api/v1",
+    "THINKPROMPT_API_URL": "https://thinkprompt-api-v2.azurewebsites.net/api/v1",
     "THINKPROMPT_API_KEY": "<the-key-from-step-2>"
   }
 }
