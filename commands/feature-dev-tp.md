@@ -13,15 +13,21 @@ You are implementing a feature using the feature-dev workflow, enhanced with aut
 
 ### Step 1: Detect Project Type
 
-Run the project detection script to determine the framework:
+Determine the framework by checking for these indicators:
 
-```bash
-~/.claude/plugins/local/thinkprompt/scripts/detect-project-type.sh .
-```
+**Next.js Detection:**
+- Check for `next.config.js`, `next.config.mjs`, or `next.config.ts` in project root
+- OR check if `package.json` contains `"next"` in dependencies
 
-Or manually check for:
-- **Next.js**: `next.config.*` file OR `"next"` in package.json dependencies
-- **NestJS**: `nest-cli.json` file OR `"@nestjs/core"` in package.json dependencies
+**NestJS Detection:**
+- Check for `nest-cli.json` in project root
+- OR check if `package.json` contains `"@nestjs/core"` in dependencies
+
+**Detection Method:**
+1. Use the Glob tool to check for config files: `next.config.*` or `nest-cli.json`
+2. If not found, read `package.json` and check the dependencies object
+
+**Result:** Identify as `nextjs`, `nestjs`, or `unknown`
 
 ### Step 2: Load Style Guide Template
 
