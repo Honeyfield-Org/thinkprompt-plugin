@@ -80,12 +80,20 @@ claude plugin install thinkprompt@thinkprompt-github
 
 You have two options to configure your API key:
 
-#### Option 1: Let Claude Code help you (Recommended)
+#### Option 1: Setup Command (Recommended)
 
-Simply ask Claude Code:
-> "Help me configure the ThinkPrompt plugin with my API key"
+Run the setup command in Claude Code:
 
-Claude Code will guide you through adding the environment variables to your settings.
+```
+/setup-thinkprompt
+```
+
+Claude will:
+1. Ask for your API key
+2. Save it to `~/.claude/settings.json`
+3. Tell you to restart Claude Code
+
+**Get your API key from:** https://thinkprompt.app/settings/api-keys
 
 #### Option 2: Manual Configuration
 
@@ -145,6 +153,26 @@ Restart Claude Code and check that ThinkPrompt MCP tools are available:
 - etc.
 
 ## Commands
+
+### `/setup-thinkprompt`
+
+Configure your ThinkPrompt API credentials interactively.
+
+```bash
+/setup-thinkprompt
+```
+
+Claude will ask for your API key and save it to `~/.claude/settings.json`. After setup, restart Claude Code.
+
+### `/feature-dev-tp`
+
+Feature development with automatic style guide loading from ThinkPrompt.
+
+```bash
+/feature-dev-tp <feature-description>
+```
+
+Automatically detects your project type (Next.js/NestJS) and loads the appropriate style guide before implementing the feature.
 
 ### `/quality-analysis`
 
@@ -260,7 +288,13 @@ Report a bug found during testing with screenshot
 
 If you see: `Missing environment variables: THINKPROMPT_API_URL, THINKPROMPT_API_KEY`
 
-**Solution:** Add the `env` block to your `~/.claude/settings.json`:
+**Solution:** Run the setup command:
+
+```
+/setup-thinkprompt
+```
+
+Or manually add the `env` block to your `~/.claude/settings.json`:
 
 ```json
 {
@@ -279,7 +313,7 @@ Restart Claude Code after plugin installation or settings change.
 
 ### API Key Invalid
 
-Get a fresh API key from https://thinkprompt.app/settings/api-keys and update the `env` block in `~/.claude/settings.json`
+Get a fresh API key from https://thinkprompt.app/settings/api-keys and run `/setup-thinkprompt` again, or manually update the `env` block in `~/.claude/settings.json`.
 
 ## Development
 
