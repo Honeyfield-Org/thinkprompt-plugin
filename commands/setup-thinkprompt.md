@@ -13,7 +13,7 @@ Tell the user:
 
 Um das ThinkPrompt Plugin zu nutzen, benötigst du einen API-Key.
 
-Du kannst deinen API-Key hier erstellen: https://thinkprompt.app/settings/api-keys"
+Du kannst deinen API-Key hier erstellen: https://thinkprompt.app/settings"
 
 ## Step 2: Ask for API Key
 

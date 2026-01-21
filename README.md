@@ -50,30 +50,30 @@ Integrate ThinkPrompt's powerful prompt management, project tracking, quality an
 
 ### Install from Marketplace
 
-The plugin is available on the ThinkPrompt Marketplace:
-
+**Step 1:** Add the ThinkPrompt marketplace:
 ```bash
-claude plugin add thinkprompt@thinkprompt-marketplace
+/plugin marketplace add https://thinkprompt-api-v2.azurewebsites.net/api/v1/plugins/marketplace.json
 ```
 
-**Marketplace URL:**
-```
-https://thinkprompt-api-v2.azurewebsites.net/api/v1/plugins/marketplace.json
-```
-
-To register the marketplace in Claude Code:
+**Step 2:** Install the plugin:
 ```bash
-claude marketplace add thinkprompt-marketplace https://thinkprompt-api-v2.azurewebsites.net/api/v1/plugins/marketplace.json
+/plugin install thinkprompt
 ```
+
+Or use the interactive plugin manager:
+```bash
+/plugin
+```
+Then navigate to **Discover** tab and select ThinkPrompt.
 
 ### Alternative: Install from GitHub
 
 ```bash
 # 1. Add the GitHub marketplace
-claude plugin marketplace add Honeyfield-Org/thinkprompt-plugin
+/plugin marketplace add Honeyfield-Org/thinkprompt-plugin
 
 # 2. Install the plugin
-claude plugin install thinkprompt@thinkprompt-github
+/plugin install thinkprompt
 ```
 
 ### Configure API Key
@@ -93,7 +93,7 @@ Claude will:
 2. Save it to `~/.claude/settings.json`
 3. Tell you to restart Claude Code
 
-**Get your API key from:** https://thinkprompt.app/settings/api-keys
+**Get your API key from:** https://thinkprompt.app/settings
 
 #### Option 2: Manual Configuration
 
@@ -108,7 +108,7 @@ Add the environment variables to your Claude Code settings file `~/.claude/setti
 }
 ```
 
-**Get your API key from:** https://thinkprompt.ai/settings
+**Get your API key from:** https://thinkprompt.app/settings
 **Note:** Claude Code resolves `${VAR}` references in `.mcp.json` from the `env` block in `settings.json`. You don't need to create a separate `.env` file.
 
 #### For Local Development
@@ -172,7 +172,7 @@ Feature development with automatic style guide loading from ThinkPrompt.
 /feature-dev-tp <feature-description>
 ```
 
-Automatically detects your project type (Next.js/NestJS) and loads the appropriate style guide before implementing the feature.
+Automatically detects your project type and loads the appropriate style guide before implementing the feature. Supports Next.js, NestJS, Angular, Vue, Nuxt, Svelte, Remix, Astro, React Native/Expo, Python (Django, FastAPI, Flask), Rust, Go, Java/Kotlin, PHP, and Ruby. When multiple style guides match, you can choose which one to use.
 
 ### `/quality-analysis`
 
@@ -198,6 +198,25 @@ Run comprehensive code quality analysis and store results in ThinkPrompt.
 - Bundle Size
 - Dependencies (vulnerabilities, outdated)
 - Dead Code (unused exports)
+
+## Agents
+
+The plugin includes specialized AI agents that trigger automatically based on context:
+
+### Feature Task Planner
+Helps break down features into development tasks. Triggers when you say things like:
+- "I need to implement user notifications, help me plan the tasks"
+- "Break down this feature into development tasks"
+
+### NestJS Code Reviewer
+Reviews NestJS code for architecture, security, and best practices. Triggers when:
+- You complete implementing a feature in a NestJS project
+- You ask for a code review
+
+### Quality Analysis Agent
+Runs comprehensive code quality checks. Triggers when you ask:
+- "Run a quality check on the codebase"
+- "How is the code quality looking?"
 
 ## MCP Tools
 
@@ -313,7 +332,7 @@ Restart Claude Code after plugin installation or settings change.
 
 ### API Key Invalid
 
-Get a fresh API key from https://thinkprompt.app/settings/api-keys and run `/setup-thinkprompt` again, or manually update the `env` block in `~/.claude/settings.json`.
+Get a fresh API key from https://thinkprompt.app/settings and run `/setup-thinkprompt` again, or manually update the `env` block in `~/.claude/settings.json`.
 
 ## Development
 
