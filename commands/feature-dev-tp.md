@@ -9,45 +9,87 @@ You are implementing a feature using the feature-dev workflow, enhanced with aut
 
 ## Pre-Phase: Style Guide Loading
 
-**CRITICAL: Before starting any feature development, you MUST load the appropriate style guide.**
+**CRITICAL: Before starting any feature development, you MUST attempt to load the appropriate style guide.**
 
-### Step 1: Detect Project Type
+### Step 1: Load Available Style Guides
 
-Determine the framework by checking for these indicators:
+Use `mcp__thinkprompt__list_templates` with `type: "style"` to get all available style guide templates.
+Store the list of templates with their `id`, `title`, `category`, `description`, and `useCaseHints`.
 
-**Next.js Detection:**
-- Check for `next.config.js`, `next.config.mjs`, or `next.config.ts` in project root
-- OR check if `package.json` contains `"next"` in dependencies
+### Step 2: Detect Project Characteristics
 
-**NestJS Detection:**
-- Check for `nest-cli.json` in project root
-- OR check if `package.json` contains `"@nestjs/core"` in dependencies
+Analyze the current project by checking for framework-specific indicators:
 
-**Detection Method:**
-1. Use the Glob tool to check for config files: `next.config.*` or `nest-cli.json`
-2. If not found, read `package.json` and check the dependencies object
+**JavaScript/TypeScript Projects (if `package.json` exists):**
 
-**Result:** Identify as `nextjs`, `nestjs`, or `unknown`
+1. Read `package.json` and extract `dependencies` and `devDependencies`
+2. Use Glob to check for framework-specific config files:
+   - `next.config.*` → Next.js
+   - `nest-cli.json` → NestJS
+   - `angular.json` → Angular
+   - `vite.config.*` → Vite
+   - `nuxt.config.*` → Nuxt
+   - `svelte.config.*` → SvelteKit
+   - `remix.config.*` → Remix
+   - `astro.config.*` → Astro
+   - `expo.json` or `app.json` with expo → React Native/Expo
 
-### Step 2: Load Style Guide Template
+3. Check for key dependencies:
+   - `next` → Next.js
+   - `@nestjs/core` → NestJS
+   - `@angular/core` → Angular
+   - `vue` → Vue.js
+   - `svelte` → Svelte
+   - `react` → React
 
-Based on the detected project type, load the corresponding style guide:
+**Python Projects (if `requirements.txt`, `pyproject.toml`, or `setup.py` exists):**
+- Check for Django, FastAPI, Flask in dependencies
 
-**For Next.js projects:**
-Use `mcp__thinkprompt__get_template` with id: `74df9ecd-57a1-46fa-aea8-e957561508c7`
+**Other Languages:**
+- `Cargo.toml` → Rust
+- `go.mod` → Go
+- `pom.xml` or `build.gradle` → Java/Kotlin
+- `composer.json` → PHP
+- `Gemfile` → Ruby
 
-**For NestJS projects:**
-Use `mcp__thinkprompt__get_template` with id: `388b08ca-0cc9-4447-a336-64223b9f06a8`
+**Result:** Create a list of detected characteristics (e.g., `["nextjs", "typescript", "react", "tailwind"]`)
 
-**For unknown projects:**
-Skip style guide loading and proceed with generic best practices.
+### Step 3: Match Templates to Project
 
-### Step 3: Acknowledge Style Guide
+For each available style guide template from Step 1:
+1. Check if `template.category` matches any detected characteristic (case-insensitive)
+2. Check if `template.title` contains a detected framework name
+3. Check if `template.description` mentions detected technologies
+4. Check if any `useCaseHints` are relevant to the project
 
-After loading, output:
+Create a list of matching templates, prioritizing:
+- Exact category matches
+- Title/description matches with framework names
+
+### Step 4: Select Style Guide
+
+**No matches found:**
+- Output: "No matching style guide found. Proceeding with generic best practices."
+- Continue without loading a template
+
+**Exactly one match:**
+- Automatically load the template using `mcp__thinkprompt__get_template` with the template's `id`
+- Output: "📚 Loaded Style Guide: [Template Title]"
+
+**Multiple matches:**
+- Use the `AskUserQuestion` tool to let the user choose:
+  - Question: "Mehrere Style Guides passen zu deinem Projekt. Welchen möchtest du verwenden?"
+  - Header: "Style Guide"
+  - Options: List each matching template with its title as label and description
+  - Add a final option: "Keinen verwenden" / "None"
+- Load the selected template using `mcp__thinkprompt__get_template`, or skip if user chose "None"
+
+### Step 5: Acknowledge Style Guide
+
+After loading (if a template was selected), output:
 ```
 📚 Loaded Style Guide: [Template Title]
-Framework: [nextjs/nestjs]
+Category: [template.category]
 ```
 
 Keep the style guide content in context for ALL subsequent phases.
@@ -118,23 +160,15 @@ Now proceed with the standard feature-dev workflow, applying the loaded style gu
 
 ## Style Guide Application Checklist
 
-### For Next.js Projects
-- [ ] Using App Router patterns (`src/app/`)
-- [ ] Server Components by default, `'use client'` only when needed
-- [ ] React Query with query key factory pattern
-- [ ] Zustand stores with selector hooks
-- [ ] Type imports separated (`import type { ... }`)
-- [ ] Path alias `@/*` used consistently
-- [ ] Tailwind classes properly sorted
-- [ ] Error boundaries where needed
+Apply the conventions from the loaded style guide throughout all phases. General checks:
 
-### For NestJS Projects
-- [ ] One module per domain/feature
-- [ ] Controllers thin, logic in services
-- [ ] DTOs with class-validator decorators
-- [ ] Proper exception handling
-- [ ] Repository pattern for data access
-- [ ] Unit tests with mocked dependencies
+- [ ] Following the file/folder organization from the style guide
+- [ ] Using the naming conventions specified
+- [ ] Applying recommended code patterns
+- [ ] Following import ordering conventions
+- [ ] Implementing proper error handling as per style guide
+- [ ] Using TypeScript/type annotations as recommended
+- [ ] Following component/module structure patterns
 
 ---
 
@@ -142,4 +176,4 @@ Now proceed with the standard feature-dev workflow, applying the loaded style gu
 
 **Implementing:** `$ARGUMENTS`
 
-Begin with Phase 0 (Style Guide Loading), then proceed through all phases systematically.
+Begin with the Pre-Phase (Style Guide Loading), then proceed through all 7 phases systematically.
