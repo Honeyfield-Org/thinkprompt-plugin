@@ -57,7 +57,14 @@ Dein ThinkPrompt API-Key wurde in `~/.claude/settings.json` gespeichert.
 Nach dem Neustart kannst du alle ThinkPrompt-Features nutzen:
 - `/feature-dev-tp` - Feature Development mit Style Guides
 - `/quality-analysis` - Code Quality Analyse
-- Und alle MCP-Tools (mcp__thinkprompt__*)"
+- Und alle MCP-Tools (mcp__thinkprompt__*)
+
+**Nächster Schritt:** Nach dem Neustart führe `/thinkprompt:setup-workspace` aus, um:
+- Dein Projekt in ThinkPrompt anzulegen
+- Style Guides basierend auf deiner Codebase zu erstellen
+- Nützliche Prompts (Code Review, Feature Planning, etc.) zu generieren
+
+Danach kannst du `/thinkprompt:feature-dev-tp` für Feature-Entwicklung nutzen."
 
 ## Error Handling
 
