@@ -164,6 +164,22 @@ Configure your ThinkPrompt API credentials interactively.
 
 Claude will ask for your API key and save it to `~/.claude/settings.json`. After setup, restart Claude Code.
 
+### `/setup-workspace`
+
+Set up ThinkPrompt for your project. Analyzes codebase, creates project, style guides, and useful prompts.
+
+```bash
+/setup-workspace
+```
+
+Claude will:
+1. **Analyze your codebase** - Detect frameworks, languages, and tools (Next.js, NestJS, Angular, etc.)
+2. **Create a ThinkPrompt project** - With name, slug, and description based on detected stack
+3. **Set up style guides** - Load existing template or generate based on code analysis
+4. **Create useful prompts** - Code Review, Feature Planning, Bug Report, Commit Message
+
+Best run once when starting a new project to get the full ThinkPrompt integration.
+
 ### `/feature-dev-tp`
 
 Feature development with automatic style guide loading from ThinkPrompt.
@@ -208,9 +224,9 @@ Helps break down features into development tasks. Triggers when you say things l
 - "I need to implement user notifications, help me plan the tasks"
 - "Break down this feature into development tasks"
 
-### NestJS Code Reviewer
-Reviews NestJS code for architecture, security, and best practices. Triggers when:
-- You complete implementing a feature in a NestJS project
+### Code Reviewer
+Reviews code for architecture, security, and best practices. Automatically loads matching style guides from ThinkPrompt based on your project type. Triggers when:
+- You complete implementing a feature
 - You ask for a code review
 
 ### Quality Analysis Agent
