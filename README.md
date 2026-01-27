@@ -190,6 +190,33 @@ Feature development with automatic style guide loading from ThinkPrompt.
 
 Automatically detects your project type and loads the appropriate style guide before implementing the feature. Supports Next.js, NestJS, Angular, Vue, Nuxt, Svelte, Remix, Astro, React Native/Expo, Python (Django, FastAPI, Flask), Rust, Go, Java/Kotlin, PHP, and Ruby. When multiple style guides match, you can choose which one to use.
 
+### `/tasks`
+
+View and manage ThinkPrompt tasks for your project.
+
+```bash
+# Show all tasks
+/tasks
+
+# Filter by status
+/tasks open
+/tasks wip
+/tasks blocked
+/tasks done
+
+# View specific task
+/tasks TP-042
+
+# Search tasks
+/tasks authentication
+```
+
+Claude will:
+1. **Auto-detect your project** - Match current directory to ThinkPrompt project
+2. **Show task overview** - Grouped by status with priorities
+3. **Allow status updates** - Change task status directly
+4. **Show task details** - Full info including comments and history
+
 ### `/quality-analysis`
 
 Run comprehensive code quality analysis and store results in ThinkPrompt.
