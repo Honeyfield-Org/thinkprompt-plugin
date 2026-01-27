@@ -190,6 +190,51 @@ Feature development with automatic style guide loading from ThinkPrompt.
 
 Automatically detects your project type and loads the appropriate style guide before implementing the feature. Supports Next.js, NestJS, Angular, Vue, Nuxt, Svelte, Remix, Astro, React Native/Expo, Python (Django, FastAPI, Flask), Rust, Go, Java/Kotlin, PHP, and Ruby. When multiple style guides match, you can choose which one to use.
 
+### `/prompts`
+
+List, search, execute, and create ThinkPrompt prompts.
+
+```bash
+# Show all prompts
+/prompts
+
+# Search and execute a prompt
+/prompts code review
+
+# Create a new prompt
+/prompts new
+```
+
+Claude will:
+1. **List your prompts** - With variables count and descriptions
+2. **Execute prompts** - Fill in variables interactively
+3. **Create prompts** - Guided creation with templates for analysis, generation, planning
+
+### `/templates`
+
+Browse and apply ThinkPrompt templates (Style Guides and Example Prompts).
+
+```bash
+# Show all templates
+/templates
+
+# Filter by type
+/templates styles
+/templates examples
+
+# Search by framework
+/templates nextjs
+
+# Create new template
+/templates new
+```
+
+Claude will:
+1. **Browse templates** - Style Guides and Example Prompts
+2. **Apply Style Guides** - View and use for your project
+3. **Convert to prompts** - Turn Example Prompts into usable prompts
+4. **Create templates** - Generate Style Guides from code analysis
+
 ### `/tasks`
 
 View and manage ThinkPrompt tasks for your project.
