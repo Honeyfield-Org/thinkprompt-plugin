@@ -1,5 +1,6 @@
 ---
-description: End-to-end feature development workflow with ThinkPrompt. Use when user starts a new feature, asks about the development process, or wants to understand how ThinkPrompt tools work together.
+name: Feature Workflow
+description: This skill should be used when the user asks "how does feature development work", "what's the workflow", "how do I start a feature", "ThinkPrompt workflow", "feature to tasks", or needs guidance on the end-to-end development process from feature creation through code review and quality analysis.
 ---
 
 # Feature Development Workflow

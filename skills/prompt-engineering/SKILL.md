@@ -1,5 +1,6 @@
 ---
-description: Best practices for creating effective prompts in ThinkPrompt. Use when user wants to create, improve, or understand prompts and templates.
+name: Prompt Engineering
+description: This skill should be used when the user asks to "create a prompt", "improve my prompt", "write a good prompt", "prompt best practices", "ThinkPrompt variables", "template vs prompt", or needs guidance on prompt structure, variable types, or avoiding prompt anti-patterns.
 ---
 
 # Prompt Engineering mit ThinkPrompt
