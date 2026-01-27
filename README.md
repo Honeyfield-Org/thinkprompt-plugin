@@ -234,6 +234,22 @@ Runs comprehensive code quality checks. Triggers when you ask:
 - "Run a quality check on the codebase"
 - "How is the code quality looking?"
 
+## Skills
+
+Contextual guides that are loaded automatically when relevant:
+
+### Prompt Engineering
+Best practices for creating effective prompts in ThinkPrompt. Loaded when:
+- Creating new prompts or templates
+- Asking about prompt best practices
+- Working with ThinkPrompt variables
+
+### Feature Workflow
+End-to-end feature development workflow guide. Loaded when:
+- Starting a new feature
+- Asking about the development process
+- Planning larger implementations
+
 ## MCP Tools
 
 The plugin provides 70+ MCP tools via the ThinkPrompt MCP Server:
