@@ -23,32 +23,34 @@ import os
 import ssl
 
 def get_ssl_context():
-    """Get SSL context with proper certificate handling for macOS."""
-    # Try certifi first (most reliable)
+    """Get SSL context with proper certificate handling for all platforms."""
+    # Try certifi first (most reliable, cross-platform)
     try:
         import certifi
         return ssl.create_default_context(cafile=certifi.where())
     except ImportError:
         pass
 
-    # Try system certificates
+    # Default context uses system certificates
+    # Works well on Windows and Linux, may fail on macOS
     ctx = ssl.create_default_context()
 
-    # macOS: try common certificate locations
-    cert_paths = [
-        '/etc/ssl/cert.pem',
-        '/etc/ssl/certs/ca-certificates.crt',
-        '/usr/local/etc/openssl/cert.pem',
-        '/usr/local/etc/openssl@1.1/cert.pem',
-    ]
+    # macOS/Linux: try common certificate locations as fallback
+    if sys.platform != 'win32':
+        cert_paths = [
+            '/etc/ssl/cert.pem',
+            '/etc/ssl/certs/ca-certificates.crt',
+            '/usr/local/etc/openssl/cert.pem',
+            '/usr/local/etc/openssl@1.1/cert.pem',
+        ]
 
-    for path in cert_paths:
-        if os.path.exists(path):
-            try:
-                ctx.load_verify_locations(path)
-                return ctx
-            except Exception:
-                continue
+        for path in cert_paths:
+            if os.path.exists(path):
+                try:
+                    ctx.load_verify_locations(path)
+                    return ctx
+                except Exception:
+                    continue
 
     return ctx
 
