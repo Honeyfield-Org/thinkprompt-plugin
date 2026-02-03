@@ -20,6 +20,37 @@ import urllib.parse
 import urllib.error
 import webbrowser
 import os
+import ssl
+
+def get_ssl_context():
+    """Get SSL context with proper certificate handling for macOS."""
+    # Try certifi first (most reliable)
+    try:
+        import certifi
+        return ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        pass
+
+    # Try system certificates
+    ctx = ssl.create_default_context()
+
+    # macOS: try common certificate locations
+    cert_paths = [
+        '/etc/ssl/cert.pem',
+        '/etc/ssl/certs/ca-certificates.crt',
+        '/usr/local/etc/openssl/cert.pem',
+        '/usr/local/etc/openssl@1.1/cert.pem',
+    ]
+
+    for path in cert_paths:
+        if os.path.exists(path):
+            try:
+                ctx.load_verify_locations(path)
+                return ctx
+            except Exception:
+                continue
+
+    return ctx
 
 def find_free_port():
     """Find an available port."""
@@ -39,7 +70,8 @@ def request_device_code(api_url: str, redirect_uri: str) -> dict:
     )
 
     try:
-        with urllib.request.urlopen(req, timeout=30) as response:
+        ctx = get_ssl_context()
+        with urllib.request.urlopen(req, timeout=30, context=ctx) as response:
             return json.loads(response.read().decode('utf-8'))
     except urllib.error.HTTPError as e:
         return {"error": f"HTTP {e.code}: {e.reason}"}
