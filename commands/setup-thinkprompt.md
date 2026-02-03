@@ -18,62 +18,37 @@ First, check if there's already an API key configured:
 
 If no key exists or validation failed, continue with Step 2.
 
-## Step 2: Get Device Code
+## Step 2: Run Device Authorization
 
-First, find a free port and request a device code:
-
-```bash
-# Find free port
-PORT=$(python3 -c "import socket; s=socket.socket(); s.bind(('',0)); print(s.getsockname()[1]); s.close()")
-
-# Get API URL (default to production)
-API_URL="${THINKPROMPT_API_URL:-https://thinkprompt-api-v2.azurewebsites.net/api/v1}"
-
-# Request device code
-curl -s -X POST "${API_URL}/auth/device" \
-  -H "Content-Type: application/json" \
-  -d "{\"redirectUri\": \"http://localhost:${PORT}/callback\"}"
-```
-
-Parse the JSON response and extract:
-- `data.userCode` - the code to show the user
-- `data.verificationUri` - the URL to open
-
-**IMPORTANT:** Immediately show the user the code in a prominent way:
-
-"**Dein Login-Code: {userCode}**
-
-Bitte gib diesen Code im Browser ein."
-
-## Step 3: Open Browser with Code
-
-Determine the verification URL:
-- If `THINKPROMPT_API_URL` contains "localhost", use `http://localhost:3002/device`
-- Otherwise use the `verificationUri` from the response
-
-Append the user code as query parameter so it's pre-filled:
+Run the device authorization script:
 
 ```bash
-open "{verification_url}?code={userCode}"
+python3 "${CLAUDE_PLUGIN_ROOT}/scripts/device-auth.py"
 ```
 
-Tell the user: "Browser wurde geöffnet. Bitte bestätige den Code dort."
+The script outputs key=value pairs. Parse them:
+- `USER_CODE=XXXX-XXXX` - The code the user needs to confirm
+- `VERIFY_URL=...` - The URL that was opened
+- `BROWSER=opened` - Browser was opened
+- `TOKEN=...` - The API key (on success)
+- `STATUS=complete` or `STATUS=error`
+- `ERROR=...` - Error message (on failure)
 
-## Step 4: Wait for Callback
+**IMPORTANT:** As soon as you see `USER_CODE=...` in the output, tell the user:
 
-Start the callback server to receive the token:
+"**Dein Login-Code: {USER_CODE}**
 
-```bash
-python3 "${CLAUDE_PLUGIN_ROOT}/scripts/device-auth-callback.py" {PORT}
-```
+Der Browser wurde geöffnet. Bitte bestätige den Code dort.
 
-Parse the output:
-- Look for `TOKEN=...` and `STATUS=complete` - extract the API key for Step 5
-- If `STATUS=error`, show the error and abort
+Warte auf Bestätigung..."
 
-## Step 5: Save API Key
+Then wait for the script to complete (it waits for the callback).
 
-Once you have the `apiKey`, save it to `~/.claude/settings.json`:
+## Step 3: Handle Result
+
+**On SUCCESS** (`STATUS=complete`):
+
+Save the token to `~/.claude/settings.json`:
 
 1. Read current settings (or start with `{}` if file doesn't exist)
 2. Merge the following, preserving existing configuration:
@@ -82,54 +57,36 @@ Once you have the `apiKey`, save it to `~/.claude/settings.json`:
 {
   "env": {
     "THINKPROMPT_API_URL": "https://thinkprompt-api-v2.azurewebsites.net/api/v1",
-    "THINKPROMPT_API_KEY": "<apiKey-from-callback>"
+    "THINKPROMPT_API_KEY": "<TOKEN-from-script>"
   }
 }
 ```
 
 3. Write the updated JSON back with proper formatting (2-space indentation)
 
-## Step 6: Confirmation
-
-Tell the user:
+Then tell the user:
 ```
 **Setup erfolgreich abgeschlossen!**
 
-Dein ThinkPrompt Account wurde verknüpft und der API-Key wurde in `~/.claude/settings.json` gespeichert.
+Dein ThinkPrompt Account wurde verknüpft und der API-Key wurde gespeichert.
 
 **Wichtig:** Bitte starte Claude Code neu, damit die Änderungen wirksam werden.
 
-Nach dem Neustart kannst du alle ThinkPrompt-Features nutzen:
-- `/feature-dev-tp` - Feature Development mit Style Guides
+Nach dem Neustart kannst du:
+- `/setup-workspace` - Projekt einrichten mit Style Guides
+- `/feature-dev-tp` - Feature Development
 - `/quality-analysis` - Code Quality Analyse
-- Und alle MCP-Tools (mcp__thinkprompt__*)
-
-**Nächster Schritt:** Nach dem Neustart führe `/thinkprompt:setup-workspace` aus, um:
-- Dein Projekt in ThinkPrompt anzulegen
-- Style Guides basierend auf deiner Codebase zu erstellen
-- Nützliche Prompts (Code Review, Feature Planning, etc.) zu generieren
 ```
+
+**On ERROR** (`STATUS=error`):
+
+Tell the user the error and suggest:
+- Check internet connection
+- Try `/setup-thinkprompt` again
+- Or manually get API key from https://thinkprompt.app/settings
 
 ## Error Handling
 
 - **Network errors**: "Verbindung zu ThinkPrompt fehlgeschlagen. Bitte überprüfe deine Internetverbindung."
-- **Invalid response**: "Unerwartete Antwort vom Server. Bitte versuche es später erneut."
 - **Timeout (5 min)**: "Die Autorisierung hat zu lange gedauert. Bitte führe `/setup-thinkprompt` erneut aus."
 - **File write errors**: Show the error and suggest manual configuration of `~/.claude/settings.json`
-
-## Implementation Notes
-
-- Two-step process: curl gets the code (instant output), then Python waits for callback
-- The callback script is at `${CLAUDE_PLUGIN_ROOT}/scripts/device-auth-callback.py`
-- The user code MUST be shown immediately after curl returns, BEFORE opening the browser
-- For local dev: if `THINKPROMPT_API_URL` contains "localhost", use `http://localhost:3002/device` as UI
-
-### Flow
-
-1. Find free port with Python one-liner
-2. curl to `/auth/device` with `redirectUri` → get `userCode` immediately
-3. **Show userCode to user** (this is the key UX improvement!)
-4. Open browser with verification URL
-5. Start callback server on the reserved port
-6. Wait for redirect with token (5 min timeout)
-7. Extract token from callback
