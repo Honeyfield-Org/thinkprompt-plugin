@@ -1,11 +1,11 @@
 {
   "name": "thinkprompt",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "ThinkPrompt integration for Claude Code - prompt management, project tracking, quality analytics, and test session tools via MCP server.",
   "author": {
     "name": "Honeyfield",
     "email": "dev@honeyfield.de"
   },
-  "homepage": "https://thinkprompt.app",
+  "homepage": "https://thinkprompt.ai",
   "keywords": ["prompts", "project-management", "quality-analysis", "testing", "mcp"]
 }

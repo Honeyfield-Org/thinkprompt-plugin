@@ -18,143 +18,56 @@ First, check if there's already an API key configured:
 
 If no key exists or validation failed, continue with Step 2.
 
-## Step 2-4: Run Device Auth Script (Local Callback Server)
+## Step 2: Get Device Code
 
-Run the following Python script that handles everything: starts a local callback server, initiates device auth, opens the browser, and waits for the callback:
+First, find a free port and request a device code:
 
 ```bash
-python3 << 'DEVICEAUTH'
-import http.server
-import socketserver
-import socket
-import json
-import urllib.request
-import urllib.parse
-import subprocess
-import platform
+# Find free port
+PORT=$(python3 -c "import socket; s=socket.socket(); s.bind(('',0)); print(s.getsockname()[1]); s.close()")
 
-API_URL = "https://thinkprompt-api-v2.azurewebsites.net/api/v1"
-RESULT = {"status": "pending", "token": None, "error": None}
+# Get API URL (default to production)
+API_URL="${THINKPROMPT_API_URL:-https://thinkprompt-api-v2.azurewebsites.net/api/v1}"
 
-def open_browser(url):
-    system = platform.system()
-    try:
-        if system == "Darwin":
-            subprocess.run(["open", url], check=True)
-        elif system == "Linux":
-            subprocess.run(["xdg-open", url], check=True)
-        elif system == "Windows":
-            subprocess.run(["start", url], shell=True, check=True)
-    except:
-        print(f"Bitte oeffne manuell: {url}")
+# Request device code
+curl -s -X POST "${API_URL}/auth/device" \
+  -H "Content-Type: application/json" \
+  -d "{\"redirectUri\": \"http://localhost:${PORT}/callback\"}"
+```
 
-def device_authorize(redirect_uri):
-    req = urllib.request.Request(
-        f"{API_URL}/auth/device",
-        data=json.dumps({"redirectUri": redirect_uri}).encode(),
-        headers={"Content-Type": "application/json"},
-        method="POST"
-    )
-    with urllib.request.urlopen(req) as resp:
-        return json.loads(resp.read().decode())
+Parse the JSON response and extract:
+- `data.userCode` - the code to show the user
+- `data.verificationUri` - the URL to open
 
-class CallbackHandler(http.server.BaseHTTPRequestHandler):
-    def log_message(self, format, *args):
-        pass
+**IMPORTANT:** Immediately show the user the code in a prominent way:
 
-    def do_GET(self):
-        global RESULT
-        parsed = urllib.parse.urlparse(self.path)
-        params = urllib.parse.parse_qs(parsed.query)
+"**Dein Login-Code: {userCode}**
 
-        if parsed.path == '/callback':
-            token = params.get('token', [None])[0]
-            status = params.get('status', [None])[0]
+Bitte gib diesen Code im Browser ein."
 
-            if status == 'complete' and token:
-                RESULT = {"status": "complete", "token": token}
-                html = '<html><body style="font-family:system-ui;text-align:center;padding:50px"><h1>Erfolgreich!</h1><p>Du kannst dieses Fenster schliessen.</p></body></html>'
-            else:
-                RESULT = {"status": "error", "error": params.get('error', ['unknown'])[0]}
-                html = '<html><body style="font-family:system-ui;text-align:center;padding:50px"><h1>Fehlgeschlagen</h1></body></html>'
+## Step 3: Open Browser with Code
 
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html; charset=utf-8')
-            self.end_headers()
-            self.wfile.write(html.encode())
-        else:
-            self.send_response(404)
-            self.end_headers()
+Determine the verification URL:
+- If `THINKPROMPT_API_URL` contains "localhost", use `http://localhost:3002/device`
+- Otherwise use the `verificationUri` from the response
 
-def main():
-    global RESULT
+Append the user code as query parameter so it's pre-filled:
 
-    # Create server first to reserve port
-    socketserver.TCPServer.allow_reuse_address = True
-    httpd = socketserver.TCPServer(("127.0.0.1", 0), CallbackHandler)
-    port = httpd.server_address[1]
-    redirect_uri = f"http://localhost:{port}/callback"
+```bash
+open "{verification_url}?code={userCode}"
+```
 
-    # Initiate device auth with redirect URI
-    try:
-        auth = device_authorize(redirect_uri)
-    except urllib.error.HTTPError as e:
-        print(f"ERROR=api_error_{e.code}")
-        print("STATUS=error")
-        httpd.server_close()
-        return
-    except urllib.error.URLError:
-        print("ERROR=network_error")
-        print("STATUS=error")
-        httpd.server_close()
-        return
-    except json.JSONDecodeError:
-        print("ERROR=invalid_json")
-        print("STATUS=error")
-        httpd.server_close()
-        return
+Tell the user: "Browser wurde geöffnet. Bitte bestätige den Code dort."
 
-    user_code = auth.get("userCode")
-    verification_uri = auth.get("verificationUri", "https://thinkprompt.ai/device")
+## Step 4: Wait for Callback
 
-    if not user_code:
-        print("ERROR=invalid_response")
-        print("STATUS=error")
-        httpd.server_close()
-        return
+Start the callback server to receive the token:
 
-    print(f"CODE={user_code}")
-    print(f"Bitte gib diesen Code im Browser ein: {user_code}")
-
-    # Open browser (server already listening)
-    open_browser(verification_uri)
-
-    # Wait for callback
-    print("Warte auf Browser-Callback...")
-    httpd.socket.settimeout(300)  # 5 min timeout
-    try:
-        httpd.handle_request()
-    except socket.timeout:
-        RESULT = {"status": "error", "error": "timeout"}
-    except Exception as e:
-        RESULT = {"status": "error", "error": f"server_error"}
-    finally:
-        httpd.server_close()
-
-    if RESULT["status"] == "complete":
-        print(f"TOKEN={RESULT['token']}")
-        print("STATUS=complete")
-    else:
-        print(f"ERROR={RESULT.get('error', 'timeout')}")
-        print("STATUS=error")
-
-if __name__ == "__main__":
-    main()
-DEVICEAUTH
+```bash
+python3 "${CLAUDE_PLUGIN_ROOT}/scripts/device-auth-callback.py" {PORT}
 ```
 
 Parse the output:
-- Look for `CODE=XXXX-XXXX` - tell the user this code
 - Look for `TOKEN=...` and `STATUS=complete` - extract the API key for Step 5
 - If `STATUS=error`, show the error and abort
 
@@ -206,17 +119,17 @@ Nach dem Neustart kannst du alle ThinkPrompt-Features nutzen:
 
 ## Implementation Notes
 
-- The Python script handles everything: callback server, device auth, and browser
-- Uses local HTTP callback server for instant token delivery (no polling)
-- The device code should be treated as sensitive (don't display it to the user)
-- The user code is designed to be easily readable (no ambiguous characters like 0/O, 1/I/L)
+- Two-step process: curl gets the code (instant output), then Python waits for callback
+- The callback script is at `${CLAUDE_PLUGIN_ROOT}/scripts/device-auth-callback.py`
+- The user code MUST be shown immediately after curl returns, BEFORE opening the browser
+- For local dev: if `THINKPROMPT_API_URL` contains "localhost", use `http://localhost:3002/device` as UI
 
-### How the Script Works
+### Flow
 
-1. Creates TCP server on port 0 (OS assigns free port)
-2. Calls `/auth/device` with `redirectUri`
-3. Validates response (userCode must exist)
-4. Opens the browser with verification URL
-5. Waits for callback (5 min timeout)
-6. Browser redirects to localhost after user authenticates
-7. Server receives token and outputs `TOKEN=...` and `STATUS=complete`
+1. Find free port with Python one-liner
+2. curl to `/auth/device` with `redirectUri` → get `userCode` immediately
+3. **Show userCode to user** (this is the key UX improvement!)
+4. Open browser with verification URL
+5. Start callback server on the reserved port
+6. Wait for redirect with token (5 min timeout)
+7. Extract token from callback

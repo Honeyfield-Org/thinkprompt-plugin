@@ -93,7 +93,7 @@ Claude will:
 2. Save it to `~/.claude/settings.json`
 3. Tell you to restart Claude Code
 
-**Get your API key from:** https://thinkprompt.app/settings
+**Get your API key from:** https://thinkprompt.ai/settings
 
 #### Option 2: Manual Configuration
 
@@ -108,7 +108,7 @@ Add the environment variables to your Claude Code settings file `~/.claude/setti
 }
 ```
 
-**Get your API key from:** https://thinkprompt.app/settings
+**Get your API key from:** https://thinkprompt.ai/settings
 **Note:** Claude Code resolves `${VAR}` references in `.mcp.json` from the `env` block in `settings.json`. You don't need to create a separate `.env` file.
 
 #### For Local Development
@@ -436,7 +436,7 @@ Restart Claude Code after plugin installation or settings change.
 
 ### API Key Invalid
 
-Get a fresh API key from https://thinkprompt.app/settings and run `/setup-thinkprompt` again, or manually update the `env` block in `~/.claude/settings.json`.
+Get a fresh API key from https://thinkprompt.ai/settings and run `/setup-thinkprompt` again, or manually update the `env` block in `~/.claude/settings.json`.
 
 ## Development
 
@@ -451,4 +451,4 @@ MIT
 ## Author
 
 Honeyfield (dev@honeyfield.de)
-https://thinkprompt.app
+https://thinkprompt.ai

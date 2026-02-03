@@ -79,7 +79,7 @@ description: This skill should be used when the user asks "how does feature deve
 ## Phase 2: Feature anlegen
 
 ### Option A: Manuell in ThinkPrompt
-1. https://thinkprompt.app öffnen
+1. https://thinkprompt.ai öffnen
 2. Projekt auswählen
 3. Feature erstellen mit:
    - Name

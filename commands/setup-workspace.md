@@ -434,7 +434,7 @@ Output final summary:
 **Nächste Schritte:**
 - `/feature-dev-tp` - Feature-Entwicklung mit automatischem Style Guide
 - `/quality-analysis` - Code-Qualitätsanalyse mit Reporting
-- Prompts in ThinkPrompt unter https://thinkprompt.app verwenden
+- Prompts in ThinkPrompt unter https://thinkprompt.ai verwenden
 
 Viel Erfolg mit deinem Projekt! 🚀"
 
