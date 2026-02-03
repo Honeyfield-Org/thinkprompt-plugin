@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "thinkprompt": {
+      "command": "npx",
+      "args": ["@honeyfield/thinkprompt-mcp"],
+      "env": {
+        "THINKPROMPT_API_URL": "${THINKPROMPT_API_URL}",
+        "THINKPROMPT_API_KEY": "${THINKPROMPT_API_KEY}"
+      }
+    }
+  }
+}
