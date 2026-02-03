@@ -7,6 +7,14 @@ argument-hint: <feature-description>
 
 You are implementing a feature using the feature-dev workflow, enhanced with automatic style guide loading from ThinkPrompt.
 
+## WICHTIG: Planning Mode aktivieren
+
+**ERSTE AKTION:** Verwende das `EnterPlanMode` Tool um in den Planning Mode zu wechseln. Dies ermöglicht eine gründliche Analyse und Planung bevor Code geschrieben wird.
+
+Nach dem Wechsel in den Planning Mode, führe die folgenden Phasen durch:
+
+---
+
 ## Pre-Phase: Style Guide Loading
 
 **CRITICAL: Before starting any feature development, you MUST attempt to load the appropriate style guide.**
@@ -128,6 +136,10 @@ Now proceed with the standard feature-dev workflow, applying the loaded style gu
 2. **Use TodoWrite** to track all implementation tasks
 3. **Order tasks** by dependencies
 4. **Identify potential blockers**
+
+**NACH PHASE 4:** Verwende `ExitPlanMode` um den Plan dem User zur Genehmigung vorzulegen. Erst nach Genehmigung mit Phase 5 fortfahren.
+
+---
 
 ### Phase 5: Implementation
 
