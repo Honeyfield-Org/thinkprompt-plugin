@@ -1,17 +1,39 @@
 ---
 description: Feature development with automatic Style Guide loading from ThinkPrompt
 argument-hint: [TASK-ID] <feature-description>
+allowed-tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash", "EnterPlanMode", "ExitPlanMode", "AskUserQuestion", "Task", "TaskCreate", "TaskUpdate", "TaskList", "TaskGet", "ToolSearch", "WebFetch", "WebSearch", "Skill"]
 ---
 
 # Feature Development with ThinkPrompt Style Guides
 
-You are implementing a feature using the feature-dev workflow, enhanced with automatic style guide loading from ThinkPrompt.
+## ⚠️ STOP — Lies diese Ausführungsreihenfolge BEVOR du irgendetwas tust
 
-## WICHTIG: Planning Mode aktivieren
+Du MUSST die folgenden drei Schritte in EXAKT dieser Reihenfolge ausführen. Überspringe KEINEN Schritt.
 
-**ERSTE AKTION:** Verwende das `EnterPlanMode` Tool um in den Planning Mode zu wechseln. Dies ermöglicht eine gründliche Analyse und Planung bevor Code geschrieben wird.
+### 1. Task-Liste erstellen (JETZT — dein allererster Tool-Aufruf)
 
-Nach dem Wechsel in den Planning Mode, führe die folgenden Phasen durch:
+Rufe `TaskCreate` für JEDE der folgenden Phasen auf. Sende alle 10 TaskCreate-Aufrufe parallel in einer einzigen Nachricht:
+
+- subject: "Pre-Phase 0: ThinkPrompt Task laden", activeForm: "Lade ThinkPrompt Task", description: "Task-ID aus Argumenten extrahieren und ThinkPrompt Task laden"
+- subject: "Pre-Phase 1: Style Guide laden", activeForm: "Lade Style Guide", description: "Style Guide Templates laden und passenden Guide auswählen"
+- subject: "Phase 1: Verstehen & Klärung", activeForm: "Analysiere Anforderungen", description: "Feature-Anforderungen verstehen und klärende Fragen stellen"
+- subject: "Phase 2: Codebase Exploration", activeForm: "Erkunde Codebase", description: "Relevante Dateien und Architektur-Entscheidungen identifizieren"
+- subject: "Phase 3: Architektur Design", activeForm: "Designe Architektur", description: "Feature-Architektur nach Style Guide Patterns entwerfen"
+- subject: "Phase 4: Implementierungsplanung", activeForm: "Plane Implementierung", description: "Aufgaben in kleine, testbare Schritte aufteilen"
+- subject: "Phase 5: Implementierung", activeForm: "Implementiere Feature", description: "Feature implementieren nach Style Guide Konventionen"
+- subject: "Phase 6: Integration & Testing", activeForm: "Teste Feature", description: "Feature testen, Unit Tests und E2E Tests erstellen"
+- subject: "Phase 7: Review & Feinschliff", activeForm: "Reviewe Code", description: "Automatischer Code Review und manuelle Nacharbeit"
+- subject: "Phase 8: ThinkPrompt Abschluss", activeForm: "Schließe ThinkPrompt Task ab", description: "Task-Status aktualisieren und Zusammenfassung erstellen"
+
+### 2. Planning Mode aktivieren
+
+ERST NACHDEM alle 10 Tasks erstellt sind: Verwende `EnterPlanMode` um in den Planning Mode zu wechseln.
+
+### 3. Phasen durcharbeiten
+
+Arbeite die Phasen unten der Reihe nach ab. Für jede Phase:
+- `TaskUpdate` mit status: "in_progress" BEVOR du die Phase startest
+- `TaskUpdate` mit status: "completed" WENN die Phase abgeschlossen ist
 
 ---
 
